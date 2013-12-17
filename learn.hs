@@ -184,6 +184,79 @@ thingName (Thing _ name _) = name
 thingAddress :: Thing -> [String]
 thingAddress (Thing _ _ address) = address
 
+thing1 = Thing 0 "Thing" ["Thing","1"]
+thing2 = Thing {
+            thingID      = 0,
+            thingAddress = ["Thing","2"],
+            thingName    = "Thing"
+        } --> Order does not matter
+
+-- Parameterized Types
+data Maybe a = Just a
+             | Nothing
+someBool    = Just True
+someString  = Just "string"
+someNumber  = Just 1.0
+someNothing = Nothing
+
+-- Recursive Types
+data Tree a = Node a (Tree a) (Tree a)
+            | Empty
+              deriving (Show)
+
+data List a = Cons a (List a)
+            | Nil
+              deriving (Show)
+fromList (x:xs) = Cons x (fromList xs)
+fromList []     = Nil
+--> Turn list literal into List type
+
+toList (Cons x xs) = x:toList xs
+toList Nil         = []
+--> Exercise: List type into list literal
+
+-- Errors
+mySecond :: [a] -> a
+
+mySecond xs = if null (tail xs)
+              then error "list too short"
+              else head (tail xs)
+--
+safeSecond :: [a] -> Maybe a
+
+safeSecond [] = Nothing
+safeSecond xs = if null (tail xs)
+                then Nothing
+                else Just (head (tail xs))
+--
+tidySecond :: [a] -> Maybe a
+
+tidySecond (_:xs:_) = Just xs
+tidySecond _        = Nothing
+
+-- Local Variables
+lend amount balance =   let reserve     = 100
+                            newBalance  = balance - amount
+                        in if balance < reserve
+                           then Nothing
+                           else Just newBalance
+
+-- Shadowing
+foo = let a = 1
+      in let b = 2
+         in a + b
+--> 3
+bar = let x = 1
+      in ((let x = "foo" in x), x)
+--> ("foo", 1)
+quux a = let a = "foo"
+         in a ++ "eek!"
+--> quux "apple"
+    --> "fooeek!"
+
+
+
+
 
 
 
