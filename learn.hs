@@ -45,7 +45,7 @@ take 2 list --> "KA"
 drop 1 list --> "AI"
 
 -- Infinite List + Lazy
-take 3 [1..] -->
+take 3 [1..] --> [1,2,3]
 
 -- Length
 length [0,2,4,8] --> 4
