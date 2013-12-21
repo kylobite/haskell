@@ -159,8 +159,8 @@ kTuple  (KType 0, "\0") --> \0
     --> kInt :: KType -> Int
 
 -- Wild Card
-nkInt   (KType ki _)    = ki
-nkTuple (KType _    kt) = kt
+nkInt   (KType ki _)  = ki
+nkTuple (KType _  kt) = kt
 
 -- Wild Card + Patter Matching
 badExample (x:xs) = x + badExample xs
@@ -242,15 +242,15 @@ lend amount balance = let reserve    = 100
                          else Just newBalance
 
 -- Shadowing
-foo = let a = 1
-        in let b = 2
-            in a + b
+foo = let    a = 1
+      in let b = 2
+         in  a + b
 --> 3
 bar = let x = 1
-        in ((let x = "foo" in x), x)
+      in ((let x = "foo" in x), x)
 --> ("foo", 1)
 qux a = let a = "foo"
-            in a ++ "eek!"
+        in  a ++ "eek!"
 --> qux "apple"
     --> "fooeek!"
 
