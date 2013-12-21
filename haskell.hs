@@ -80,11 +80,11 @@ newOr a b = if a then a else b
 newOr True (length [1..] > 0) --> True
 
 -- Type + Data
-type KInt       =   Int
-type KString    =   String
-type KTuple     =   (KInt, KString)
-data KType      =   KType KTuple
-                    deriving (Show)
+type KInt       =    Int
+type KString    =    String
+type KTuple     =    (KInt, KString)
+data KType      =    KType KTuple
+                     deriving (Show)
 
 ktype = KType (0, "\0")
 
@@ -107,7 +107,7 @@ Invoice "customer0000"
 -- Distinction of Algebraic Data Types
 a = ("metal", "grey")
 b = ("water", "blue")
-data Solid  = Solid  String String
+data Solid  = Solid String String
 data Liquid = Liquid String String
 c = Solid   "metal" "grey"
 d = Liquid  "water" "blue"
@@ -150,17 +150,17 @@ third (a, b, c) = c
 --
 complicated (True, a, x:xs, 5) = (a, xs)
 --
-ktype = KType (0, "\0")
+ktype =  KType (0, "\0")
 kInt    (KType ki kt) = ki
 kTuple  (KType ki kt) = kt
-kInt (KType 0, "\0") --> 0
-kTuple (KType 0, "\0") --> \0
+kInt    (KType 0, "\0") --> 0
+kTuple  (KType 0, "\0") --> \0
 --> :type kInt
     --> kInt :: KType -> Int
 
 -- Wild Card
-nkInt   (KType ki _)  = ki
-nkTuple (KType _  kt) = kt
+nkInt   (KType ki _)    = ki
+nkTuple (KType _    kt) = kt
 
 -- Wild Card + Patter Matching
 badExample (x:xs) = x + badExample xs
@@ -170,10 +170,10 @@ goodExample _       = 0
 
 -- Record Syntax
 data Thing = Thing {
-    thingID         :: Int,
-    thingName       :: String,
-    thingAddress    :: [String]
-    } deriving (Show)
+      thingID       :: Int,
+      thingName     :: String,
+      thingAddress  :: [String]
+      } deriving (Show)
 -- ^ simple | this sucks v
 data Thing = Thing Int String [String]
              deriving (Show)
@@ -186,18 +186,18 @@ thingAddress (Thing _ _ address) = address
 
 thing1 = Thing 0 "Thing" ["Thing","1"]
 thing2 = Thing {
-            thingID      = 0,
-            thingAddress = ["Thing","2"],
-            thingName    = "Thing"
-        } --> Order does not matter
+                thingID     = 0,
+                thingAddress = ["Thing","2"],
+                thingName    = "Thing"
+                } --> Order does not matter
 
 -- Parameterized Types
 data Maybe a = Just a
              | Nothing
-someBool    = Just True
-someString  = Just "string"
-someNumber  = Just 1.0
-someNothing = Nothing
+someBool     = Just True
+someString   = Just "string"
+someNumber   = Just 1.0
+someNothing  = Nothing
 
 -- Recursive Types
 data Tree a = Node a (Tree a) (Tree a)
@@ -235,24 +235,100 @@ tidySecond (_:xs:_) = Just xs
 tidySecond _        = Nothing
 
 -- Local Variables
-lend amount balance =   let reserve     = 100
-                            newBalance  = balance - amount
-                        in if balance < reserve
-                           then Nothing
-                           else Just newBalance
+lend amount balance = let reserve    = 100
+                          newBalance = balance - amount
+                      in if balance < reserve
+                         then Nothing
+                         else Just newBalance
 
 -- Shadowing
 foo = let a = 1
-      in let b = 2
-         in a + b
+        in let b = 2
+            in a + b
 --> 3
 bar = let x = 1
-      in ((let x = "foo" in x), x)
+        in ((let x = "foo" in x), x)
 --> ("foo", 1)
-quux a = let a = "foo"
-         in a ++ "eek!"
---> quux "apple"
+qux a = let a = "foo"
+            in a ++ "eek!"
+--> qux "apple"
     --> "fooeek!"
+
+-- Where Clause
+lend2 amount balance =  if amount < reserve * 0.5
+                        then Just newBalance
+                        else Nothing
+    where reserve    =  100
+          newBalance =  balance - amount
+
+-- Local Functions
+pluralise :: String -> [Int] -> [String]
+pluralise word counts = map plural counts
+    where plural 0 = "no " ++ word ++ "s"
+          plural 1 = "one " ++ word
+          plural n = show n ++ " " ++ word ++ "s"
+
+-- Bad Indentation
+--> If you start your code in this column
+    --> It is okay to go to this column
+--> As long as you do not go back to this column
+--> Alignment inside functions does not effect
+--- the alignment outside of functions
+
+-- Offside Rule and Braces
+kit = let a = 1
+          b = 2
+          c = 3
+      in  a + b + c
+kat = let {a = 1; b = 2; c = 3}
+      in   a + b + c
+--> kit == kat
+
+-- Case
+fromMaybe defval wrapped =
+    case wrapped of
+        Nothing     -> defval
+        Just value  -> value
+
+-- Correctly match variable
+data Fruit = Apple | Orange
+apple   = "apple"
+orange  = "orange"
+
+whichFruit :: String -> Fruit
+whichFruit f = case f of
+                "apple"     -> Apple
+                "orange"    -> Orange
+
+-- Correctly compare for equality
+nodesAreSame (Node a _ _) (Node b _ _)
+    | a == b        = Just a
+nodesAreSame _ _    = Nothing
+
+-- Guards
+lend3 amount balance
+        | amount <= 0               = Nothing
+        | amount > reserve * 0.5    = Nothing
+        | otherwise                 = Just newBalance
+        where reserve    = 100
+              newBalance = balance - amount
+--
+niceDrop n xs | x <= 0  = xs
+niceDrop _ []           = []
+niceDrop n (_:xs)       = niceDrop (n - 1) xs
+
+-- Moar exercises
+kLength :: [a] -> Int
+kLength xs | null xs = 0
+kLength []           = 0
+kLength (_:xs)       = 1 + kLength xs
+
+-- DO OTHER EXERCISES!!!
+
+
+
+
+
 
 
 
