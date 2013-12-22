@@ -4,54 +4,54 @@
 
 -- It
 x = 0
-succ x --> 1
-y = it --> 1
+succ x --- 1
+y = it --- 1
 
 -- Math
-(+) 0 1         --> 1
-sqrt 16         --> 4
-succ 32         --> 33
-pred 64         --> 63
-sin (pi / 2)    --> 1.0
-truncate pi     --> 3
-round pi        --> 3
-round 3.5       --> 4
-floor 3.9       --> 3
-ceiling 3.1     --> 4
-odd (round pi)  --> True
-even (round pi) --> False
+(+) 0 1         --- 1
+sqrt 16         --- 4
+succ 32         --- 33
+pred 64         --- 63
+sin (pi / 2)    --- 1.0
+truncate pi     --- 3
+round pi        --- 3
+round 3.5       --- 4
+floor 3.9       --- 3
+ceiling 3.1     --- 4
+odd (round pi)  --- True
+even (round pi) --- False
 
 -- Compare
-compare 0 1                 --> LT
-compare 1 1                 --> EQ
-compare 1 0                 --> GT
-compare (sqrt 4) (sqrt 9)   --> LT
-compare 0 1 == LT           --> True
+compare 0 1                 --- LT
+compare 1 1                 --- EQ
+compare 1 0                 --- GT
+compare (sqrt 4) (sqrt 9)   --- LT
+compare 0 1 == LT           --- True
 
 -- Head, Tail, Init, Last
 list = ["K","A","I"]
-head list --> "K"
-tail list --> ["A","I"]
-init list --> ["K","A"]
-last list --> "I"
+head list --- "K"
+tail list --- ["A","I"]
+init list --- ["K","A"]
+last list --- "I"
 
 -- Tuples
 bday = (102613, "KAI")
-fst bday --> 102613
-snd bday --> "KAI"
+fst bday --- 102613
+snd bday --- "KAI"
 
 -- Take, Drop
-take 2 list --> "KA"
-drop 1 list --> "AI"
+take 2 list --- "KA"
+drop 1 list --- "AI"
 
 -- Infinite List + Lazy
-take 3 [1..] --> [1,2,3]
+take 3 [1..] --- [1,2,3]
 
 -- Length
-length [0,2,4,8] --> 4
+length [0,2,4,8] --- 4
 
 -- Lines
-lines "K\nA\nI" --> ["K","A","I"]
+lines "K\nA\nI" --- ["K","A","I"]
 
 -- Multiline Drop
 kDrop :: Int -> [a] -> [a]
@@ -64,20 +64,20 @@ kDropX :: Int -> [a] -> [a]
 kDropX x xs = if x <= 0 || null xs then xs else kDrop (x - 1) (tail xs)
 
 -- Null
-null "kai" --> False
+null "kai" --- False
 
 -- Odd
 isOdd n = mod n 2 == 1
-isOdd 2 --> False
+isOdd 2 --- False
 
 -- Or
-False || False --> False
+False || False --- False
 
 -- Or Function + Short Circuit
 newOr :: Bool -> Bool -> Bool
 newOr a b = if a then a else b
 
-newOr True (length [1..] > 0) --> True
+newOr True (length [1..] > 0) --- True
 
 -- Type + Data
 type KInt       =    Int
@@ -127,7 +127,7 @@ data Roygbiv = Red
              | Indigo
              | Violet
                deriving (Eq, Show)
-Red == Yellow --> False
+Red == Yellow --- False
 
 -- Unions
 type Vector = (Double, Double)
@@ -153,10 +153,10 @@ complicated (True, a, x:xs, 5) = (a, xs)
 ktype =  KType (0, "\0")
 kInt    (KType ki kt) = ki
 kTuple  (KType ki kt) = kt
-kInt    (KType 0, "\0") --> 0
-kTuple  (KType 0, "\0") --> \0
---> :type kInt
-    --> kInt :: KType -> Int
+kInt    (KType 0, "\0") --- 0
+kTuple  (KType 0, "\0") --- \0
+--- :type kInt
+    --- kInt :: KType -> Int
 
 -- Wild Card
 nkInt   (KType ki _)  = ki
@@ -189,7 +189,7 @@ thing2 = Thing {
                 thingID     = 0,
                 thingAddress = ["Thing","2"],
                 thingName    = "Thing"
-                } --> Order does not matter
+                } --- Order does not matter
 
 -- Parameterized Types
 data Maybe a = Just a
@@ -209,11 +209,11 @@ data List a = Cons a (List a)
               deriving (Show)
 fromList (x:xs) = Cons x (fromList xs)
 fromList []     = Nil
---> Turn list literal into List type
+--- Turn list literal into List type
 
 toList (Cons x xs) = x:toList xs
 toList Nil         = []
---> Exercise: List type into list literal
+--- Exercise: List type into list literal
 
 -- Errors
 mySecond :: [a] -> a
@@ -245,14 +245,14 @@ lend amount balance = let reserve    = 100
 foo = let    a = 1
       in let b = 2
          in  a + b
---> 3
+--- 3
 bar = let x = 1
       in ((let x = "foo" in x), x)
---> ("foo", 1)
+--- ("foo", 1)
 qux a = let a = "foo"
         in  a ++ "eek!"
---> qux "apple"
-    --> "fooeek!"
+--- qux "apple"
+    --- "fooeek!"
 
 -- Where Clause
 lend2 amount balance =  if amount < reserve * 0.5
@@ -269,10 +269,10 @@ pluralise word counts = map plural counts
           plural n = show n ++ " " ++ word ++ "s"
 
 -- Bad Indentation
---> If you start your code in this column
-    --> It is okay to go to this column
---> As long as you do not go back to this column
---> Alignment inside functions does not effect
+--- If you start your code in this column
+    --- It is okay to go to this column
+--- As long as you do not go back to this column
+--- Alignment inside functions does not effect
 --- the alignment outside of functions
 
 -- Offside Rule and Braces
@@ -282,7 +282,7 @@ kit = let a = 1
       in  a + b + c
 kat = let {a = 1; b = 2; c = 3}
       in   a + b + c
---> kit == kat
+--- kit == kat
 
 -- Case
 fromMaybe defval wrapped =
@@ -313,15 +313,32 @@ lend3 amount balance
         where reserve    = 100
               newBalance = balance - amount
 --
-niceDrop n xs | x <= 0  = xs
+niceDrop n xs | n <= 0  = xs
 niceDrop _ []           = []
 niceDrop n (_:xs)       = niceDrop (n - 1) xs
 
 -- Moar exercises
 kLength :: [a] -> Int
-kLength xs | null xs = 0
+kLength xs | null xs = -1
 kLength []           = 0
 kLength (_:xs)       = 1 + kLength xs
+--- Calculate length
+
+kMean xs | null xs =    -1
+kMean []           =    0
+kMean (x:xs)       =    let a = x + sum xs
+                            b = 1 + (length xs)
+                            c = fromIntegral b
+                        in  a / c
+--- Calculate mean
+
+kPalindrome :: [a] -> [a]
+kPalindrome xs | null xs =  []
+kPalindrome []           =  []
+kPalindrome (x:xs)       =  let a = (x:xs)
+                                b = reverse a
+                            in  a ++ b
+--- Make a palindrome
 
 -- DO OTHER EXERCISES!!!
 
