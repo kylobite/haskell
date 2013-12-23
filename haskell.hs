@@ -272,6 +272,7 @@ pluralise word counts = map plural counts
 --- If you start your code in this column
     --- It is okay to go to this column
 --- As long as you do not go back to this column
+--
 --- Alignment inside functions does not effect
 --- the alignment outside of functions
 
@@ -339,6 +340,14 @@ kPalindrome (x:xs)       =  let a = (x:xs)
                                 b = reverse a
                             in  a ++ b
 --- Make a palindrome
+
+kIsPalindrome xs | null xs =    False
+kIsPalindrome []           =    False
+kIsPalindrome (x:xs)       =    let a = (x:xs)
+                                    b = reverse a
+                                in (a == b)
+--- Determine if palindrome
+
 
 -- DO OTHER EXERCISES!!!
 
