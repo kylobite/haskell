@@ -348,12 +348,12 @@ kIsPalindrome (x:xs)       =    let a = (x:xs)
                                 in (a == b)
 --- Determine if palindrome
 
-factors :: Int -> [Int]
-factors p = factorize p p
-    where   factorize _ 1   =   []
-            factorize p ps  =   if p `mod` ps == 0
-                                then (ps:(factorize p (ps - 1)))
-                                else factorize p (ps - 1)
+factorize :: Int -> [Int]
+factorize p = factor p p
+    where factor _ 1   =    []
+          factor p ps  =    if p `mod` ps == 0
+                            then (ps:(factor p (ps - 1)))
+                            else factor p (ps - 1)
 -- My spin on factorization (lags at 8+ digits)
 
 
