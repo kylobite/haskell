@@ -348,8 +348,13 @@ kIsPalindrome (x:xs)       =    let a = (x:xs)
                                 in (a == b)
 --- Determine if palindrome
 
-
--- DO OTHER EXERCISES!!!
+factors :: Int -> [Int]
+factors p = factorize p p
+    where   factorize _ 1   =   []
+            factorize p ps  =   if p `mod` ps == 0
+                                then (ps:(factorize p (ps - 1)))
+                                else factorize p (ps - 1)
+-- My spin on factorization (lags at 8+ digits)
 
 
 
