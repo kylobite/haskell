@@ -1,3 +1,4 @@
+
 ; clojure.clj
 
 0 ; numbers
@@ -23,7 +24,7 @@
 
 {1 "one", 2 "two", 3 "three"} ; maps
 
-#{0 "zero" :zero 0x0} ; sets
+#{0 "0" :zero} ; sets
 
 () [] {} #{} ; !nil
 
@@ -34,7 +35,7 @@
 ;   (+ 1 2 3) vs (1 + 2 + 3)
 
 (fn mk-set [x y] #{x y}) ; how -not- to make an anonymous function
-;=> #<user$eval__1$mk_set__2 
+;=> #<user$eval__1$mk_set__2
 
 ((fn [x y] #{x y}) 1 2) ; anonymous function
 ;=> #{1 2}
@@ -44,7 +45,7 @@
     ([x y]  #{x y})) 42) ; function w/ param options (1 or 2)
 ;=> #{42}
 
-((fn arity2+ [x y & z] [x y z]) 1 2) ; function with 2+ params (needs at least 2)
+((fn arity2+ [x y & z] [x y z]) 1 2) ; function with 2+ params
 ;=> [1 2 nil]
 
 ((fn arity2+ [x y & z] [x y z]) 1 2 3 4)
@@ -63,16 +64,36 @@
     "Documentation strings!!!"
     ([x]    #{x})
     ([x y]  #{x y})) ; syntactical sugar for def + fn
-    
 
+(def make-a-list #(list %1 %&)) ; #() can replace fn
+(make-a-list 1 2 3) ; list makes a list
+;=> (1 (2 3))
 
+(def x 1) ; vars via def
 
+(do
+  7
+  (+ 1 2)
+  42) ; blocks; returns last line
+;=> 42
 
+(let [r         3
+      pi        3.1415
+      r-squared (* r r)]
+    (println "radius is" r)
+    (* pi r-squared)) ; locals and printing
 
+(defn print-down-from [x]
+    (when (pos? x)          ; when = 'if' w/ side-effects
+        (println x)         ; printing is a side-effect
+        (recur (dec x))))   ; recur does recursion
 
-
-
-
+(defn sum-down-from [sum x]
+    (if (pos? x)
+        (recur (+ sum x) (dec x))
+        sum)) ; if for when values are returned
+(sum-down-from 0 10)
+;=> 55
 
 
 
