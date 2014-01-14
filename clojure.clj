@@ -95,6 +95,23 @@
 (sum-down-from 0 10)
 ;=> 55
 
+(defn sum-down-from [initial-x]
+    (loop [ sum 0
+            x initial-x]
+        (if (pos? x)
+            (recur (+ sum x) (dec x))
+            sum))) ; recur goes to loop, loop acts like let
+
+(defn absolute-value [x]
+    (if (pos? x)
+        x       ; then, in tail position
+        (-x))   ; else, (-x) in tail position, x is not
+; recur only works in a tail position
+
+
+
+
+
 
 
 
