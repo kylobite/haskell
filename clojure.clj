@@ -69,7 +69,7 @@
 (make-a-list 1 2 3) ; list makes a list
 ;=> (1 (2 3))
 
-(def x 1) ; vars via def
+(def x "vars") ; def binds data to symbols, aka a var
 
 (do
   7
@@ -108,8 +108,37 @@
         (-x))   ; else, (-x) in tail position, x is not
 ; recur only works in a tail position
 
+(cons 1 [2 4]) ; constructs a list
+;=> (1 2 4)
 
+(def a "apple") ; a is now clearly "apple"
+(quote a) ; quote prevents evaluation
+;=> a
 
+(quote (cons 1 [2 4])) ; we can even quote forms like cons
+;=> (cons 1 [2 4])
+
+(cons 1 '(2 4)) ; suddenly, list syntax can work here
+;=> (1 2 4)
+
+`(1 2 4) ; syntax-quoting or something
+;=> (1 2 4)
+
+`what-does-this-even-do? ; i mean really?
+;=> user/what-does-this-even-do?
+
+`(1 2 ~4) ; unquoting
+;=> (1 2 4)
+
+(let [x 2]
+    `(1 ~x 4)) ; moar unquoting
+;=> (1 2 4)
+
+(let [x '(2 4)] `(1 ~x)) ; all together now!
+;=> (1 (2 4))
+
+(let [x '(2 3)] `(1 ~@x)) ; unquote splicing
+;=> (1 2 4)
 
 
 
