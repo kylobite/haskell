@@ -140,6 +140,36 @@
 (let [x '(2 3)] `(1 ~@x)) ; unquote splicing
 ;=> (1 2 4)
 
+java.util.Locale/JAPAN ; access Java
+;=> #<Locale ja_JP>
+
+(Math/sqrt 9) ; access Java via namespaces
+;=> 3
+
+(new java.util.HashMap {"foo" 0 "bar" 1 "baz" 2}) ; java class instances
+;=> #<HashMap {foo=0, bar=1, baz=2}>
+(java.util.HashMap. {"foo" 0 "bar" 1 "baz" 2}) ; idiomatic form using (.)
+;=> #<HashMap {foo=0, bar=1, baz=2}>
+
+(.x (java.awt.Point. 1 2)) ; java instance vars
+;=> 1
+
+(.divide (java.math.BigDecimal. "10") 2M) ; java instance methods
+;=> 5
+
+(let [origin (java.awt.Point. 0 0)]
+    (set! (.x origin) 2)    ; set! modifies value
+    (str origin))           ; str converts to string
+;=> "java.awt.Point[x=2,y=0"
+
+; new java.util.Date().toString().endsWith("2013"); Java version
+(.endsWith (.toString (java.util.Date.)) "2014")  ; Clojure version
+(.. (java.util.Date.) toString (endsWith "2014")) ; Readable version
+;=> true
+
+
+
+
 
 
 
