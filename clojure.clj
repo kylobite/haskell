@@ -167,6 +167,57 @@ java.util.Locale/JAPAN ; access Java
 (.. (java.util.Date.) toString (endsWith "2014")) ; Readable version
 ;=> true
 
+; java.util.HashMap h = new java.util.HashMap();
+; h.puts("HOME", "/home/me");
+; h.puts("SRC", "src");
+; h.puts("BIN", "classes")      ; Java Version
+(doto (java.util.HashMap.)
+    (.puts "HOME"   "/home/me") ; Java repetative referencing
+    (.puts "SRC"    "src")
+    (.puts "BIN"    "classes")) ; Clojure Version
+;=> #<HashMap {HOME=/home/me, SRC=src, BIN=classes}>
+
+(throw (Exception. "I was thrown")) ; Exceptions!
+;=> java.lang.Exception: I was thrown
+
+(defn throw-catch [f]
+    [(try
+        (f)
+        (catch ArithmeticException e "You divided by zero")
+        (catch Exception e (str "Look what you did: "
+            (.getMessage e)))
+        (finally (println "loading...")))])
+; Try/Catch Exceptions
+(throw-catch #(/ 4 2))
+; loading...
+;=> [2]
+;   (throw-catch #(/ 1 0))
+;   loading...
+;   => ["You divided by zero"]
+;   (throw-catch #(throw (Exception. "yes")))
+;   loading...
+;   => ["Look what you did: yes"]
+
+(ns kylo.report) ; namespacing
+; REPL: kylo.bite=>
+(defn report-ns [] (str "We are in namespace: " *ns*)) ; *ns* var
+(report-ns)
+;=> "We are in namespace: kylo.bite"
+
+(ns user) ; back to default
+; (report-ns) would crash here because it is not in 'user'
+
+(ns kylo.req
+    (:require clojure.set)) ; loading namespaces
+(clojure.set/intersection #{0 1} #{1 0})
+;=> #{1}
+
+(ns kylo.req-alias
+    (:require [clojure.set :as set])) ; alias namespaces
+(set/intersection #{0 1} #{1 0})
+;=> #{1}
+
+
 
 
 
