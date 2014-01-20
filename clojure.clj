@@ -97,7 +97,7 @@
 
 (defn sum-down-from [initial-x]
     (loop [ sum 0
-            x initial-x]
+            x   initial-x]
         (if (pos? x)
             (recur (+ sum x) (dec x))
             sum))) ; recur goes to loop, loop acts like let
@@ -105,7 +105,7 @@
 (defn absolute-value [x]
     (if (pos? x)
         x       ; then, in tail position
-        (-x))   ; else, (-x) in tail position, x is not
+        (- x)))   ; else, (-x) in tail position, x is not
 ; recur only works in a tail position
 
 (cons 1 [2 4]) ; constructs a list
@@ -216,6 +216,8 @@ java.util.Locale/JAPAN ; access Java
     (:require [clojure.set :as set])) ; alias namespaces
 (set/intersection #{0 1} #{1 0})
 ;=> #{1}
+
+
 
 
 
