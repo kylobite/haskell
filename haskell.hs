@@ -441,6 +441,15 @@ span even [2,4,5,8]
 break even [1,3,6,7]
 --- ([1,3], [6,7])
 
+-- Searching Lists --
+-- * filter :: (a -> Bool) -> [a] -> [a]
+filter odd [1,2,3,4]
+--- [1,3]
+
+
+
+
+
 
 
 
