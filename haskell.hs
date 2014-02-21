@@ -7,7 +7,7 @@ x = 0
 succ x --- 1
 y = it --- 1
 
--- Math
+-- Math --
 (+) 0 1         --- 1
 sqrt 16         --- 4
 succ 32         --- 33
@@ -21,65 +21,65 @@ ceiling 3.1     --- 4
 odd (round pi)  --- True
 even (round pi) --- False
 
--- Compare
+-- Compare --
 compare 0 1                 --- LT
 compare 1 1                 --- EQ
 compare 1 0                 --- GT
 compare (sqrt 4) (sqrt 9)   --- LT
 compare 0 1 == LT           --- True
 
--- Head, Tail, Init, Last
+-- Head, Tail, Init, Last --
 list = ["K","A","I"]
 head list --- "K"
 tail list --- ["A","I"]
 init list --- ["K","A"]
 last list --- "I"
 
--- Tuples
+-- Tuples --
 bday = (102613, "KAI")
 fst bday --- 102613
 snd bday --- "KAI"
 
--- Take, Drop
+-- Take, Drop --
 take 2 list --- "KA"
 drop 1 list --- "AI"
 
--- Infinite List + Lazy
+-- Infinite List + Lazy --
 take 3 [1..] --- [1,2,3]
 
--- Length
+-- Length --
 length [0,2,4,8] --- 4
 
--- Lines
+-- Lines --
 lines "K\nA\nI" --- ["K","A","I"]
 
--- Multiline Drop
+-- Multiline Drop --
 kDrop :: Int -> [a] -> [a]
 kDrop x xs = if x <= 0 || null xs
              then xs
              else kDrop (x - 1) (tail xs)
 
--- One-liner Drop
+-- One-liner Drop --
 kDropX :: Int -> [a] -> [a]
 kDropX x xs = if x <= 0 || null xs then xs else kDrop (x - 1) (tail xs)
 
--- Null
+-- Null --
 null "kai" --- False
 
--- Odd
+-- Odd --
 isOdd n = mod n 2 == 1
 isOdd 2 --- False
 
--- Or
+-- Or --
 False || False --- False
 
--- Or Function + Short Circuit
+-- Or Function + Short Circuit --
 newOr :: Bool -> Bool -> Bool
 newOr a b = if a then a else b
 
 newOr True (length [1..] > 0) --- True
 
--- Type + Data
+-- Type + Data --
 type KInt       =    Int
 type KString    =    String
 type KTuple     =    (KInt, KString)
@@ -88,10 +88,10 @@ data KType      =    KType KTuple
 
 ktype = KType (0, "\0")
 
--- One-liner Algebraic Data Type
+-- One-liner Algebraic Data Type --
 data Bool = False | True
 
--- Multiline Algebraic Data Type
+-- Multiline Algebraic Data Type --
 type CustomerID  = String
 type CardHolder  = String
 type CardNumber  = String
@@ -104,7 +104,7 @@ CreditCard "123456" "Some One" ["City", "Country"]
 CashOnDelivery
 Invoice "customer0000"
 
--- Distinction of Algebraic Data Types
+-- Distinction of Algebraic Data Types --
 a = ("metal", "grey")
 b = ("water", "blue")
 data Solid  = Solid String String
@@ -118,7 +118,7 @@ data Polar2D     = Polar2D Double Double
 -- Cartesian2D (sqrt 2) (sqrt 2) == Polar2D (pi / 4) 2 evals to error
 -- Eq: allows for equality comparisons
 
--- Data Equality Comparisons
+-- Data Equality Comparisons --
 data Roygbiv = Red 
              | Orange
              | Yellow
@@ -129,23 +129,23 @@ data Roygbiv = Red
                deriving (Eq, Show)
 Red == Yellow --- False
 
--- Unions
+-- Unions --
 type Vector = (Double, Double)
 data Shape  = Circle Vector Double
             | Poly [Vector]
 
--- Pattern Matching
+-- Pattern Matching --
 myNot True  = False
 myNot False = True
 --
 sumList (x:xs)  = x + sumList xs
 sumList []      = 0
 
--- Deconstruction
+-- Deconstruction --
 KType (0, "\0")
 (KType ki kt)
 
--- More Pattern Matching
+-- More Pattern Matching --
 third (a, b, c) = c
 --
 complicated (True, a, x:xs, 5) = (a, xs)
@@ -158,17 +158,17 @@ kTuple  (KType 0, "\0") --- \0
 --- :type kInt
     --- kInt :: KType -> Int
 
--- Wild Card
+-- Wild Card --
 nkInt   (KType ki _)  = ki
 nkTuple (KType _  kt) = kt
 
--- Wild Card + Patter Matching
+-- Wild Card + Patter Matching --
 badExample (x:xs) = x + badExample xs
 --
 goodExample (x:xs)  = x + goodExample xs
 goodExample _       = 0
 
--- Record Syntax
+-- Record Syntax --
 data Thing = Thing {
       thingID       :: Int,
       thingName     :: String,
@@ -191,7 +191,7 @@ thing2 = Thing {
                 thingName    = "Thing"
                 } --- Order does not matter
 
--- Parameterized Types
+-- Parameterized Types --
 data Maybe a = Just a
              | Nothing
 someBool     = Just True
@@ -199,7 +199,7 @@ someString   = Just "string"
 someNumber   = Just 1.0
 someNothing  = Nothing
 
--- Recursive Types
+-- Recursive Types --
 data Tree a = Node a (Tree a) (Tree a)
             | Empty
               deriving (Show)
@@ -215,7 +215,7 @@ toList (Cons x xs) = x:toList xs
 toList Nil         = []
 --- Exercise: List type into list literal
 
--- Errors
+-- Errors --
 mySecond :: [a] -> a
 
 mySecond xs = if null (tail xs)
@@ -234,14 +234,14 @@ tidySecond :: [a] -> Maybe a
 tidySecond (_:xs:_) = Just xs
 tidySecond _        = Nothing
 
--- Local Variables
+-- Local Variables --
 lend amount balance = let reserve    = 100
                           newBalance = balance - amount
                       in if balance < reserve
                          then Nothing
                          else Just newBalance
 
--- Shadowing
+-- Shadowing --
 foo = let    a = 1
       in let b = 2
          in  a + b
@@ -254,21 +254,21 @@ qux a = let a = "foo"
 --- qux "apple"
     --- "fooeek!"
 
--- Where Clause
+-- Where Clause --
 lend2 amount balance =  if amount < reserve * 0.5
                         then Just newBalance
                         else Nothing
     where reserve    =  100
           newBalance =  balance - amount
 
--- Local Functions
+-- Local Functions --
 pluralise :: String -> [Int] -> [String]
 pluralise word counts = map plural counts
     where plural 0 = "no " ++ word ++ "s"
           plural 1 = "one " ++ word
           plural n = show n ++ " " ++ word ++ "s"
 
--- Bad Indentation
+-- Bad Indentation --
 --- If you start your code in this column
     --- It is okay to go to this column
 --- As long as you do not go back to this column
@@ -276,7 +276,7 @@ pluralise word counts = map plural counts
 --- Alignment inside functions does not effect
 --- the alignment outside of functions
 
--- Offside Rule and Braces
+-- Offside Rule and Braces --
 kit = let a = 1
           b = 2
           c = 3
@@ -285,13 +285,13 @@ kat = let {a = 1; b = 2; c = 3}
       in   a + b + c
 --- kit == kat
 
--- Case
+-- Case --
 fromMaybe defval wrapped =
     case wrapped of
         Nothing     -> defval
         Just value  -> value
 
--- Correctly match variable
+-- Correctly match variable --
 data Fruit = Apple | Orange
 apple   = "apple"
 orange  = "orange"
@@ -301,12 +301,12 @@ whichFruit f = case f of
                 "apple"     -> Apple
                 "orange"    -> Orange
 
--- Correctly compare for equality
+-- Correctly compare for equality --
 nodesAreSame (Node a _ _) (Node b _ _)
     | a == b        = Just a
 nodesAreSame _ _    = Nothing
 
--- Guards
+-- Guards --
 lend3 amount balance
         | amount <= 0               = Nothing
         | amount > reserve * 0.5    = Nothing
@@ -318,14 +318,14 @@ niceDrop n xs | n <= 0  = xs
 niceDrop _ []           = []
 niceDrop n (_:xs)       = niceDrop (n - 1) xs
 
--- Moar exercises
+-- More exercises --
 kLength :: [a] -> Int
-kLength xs | null xs = -1
+kLength xs | null xs = 0
 kLength []           = 0
 kLength (_:xs)       = 1 + kLength xs
 --- Calculate length
-
-kMean xs | null xs =    -1
+kMean :: Fractional a => [a] -> a
+kMean xs | null xs =    0
 kMean []           =    0
 kMean (x:xs)       =    let a = x + sum xs
                             b = 1 + (length xs)
@@ -341,6 +341,7 @@ kPalindrome (x:xs)       =  let a = (x:xs)
                             in  a ++ b
 --- Make a palindrome
 
+kIsPalindrome :: Eq a => [a] -> Bool
 kIsPalindrome xs | null xs =    False
 kIsPalindrome []           =    False
 kIsPalindrome (x:xs)       =    let a = (x:xs)
@@ -354,7 +355,93 @@ factorize p = factor p p
           factor p ps  =    if p `mod` ps == 0
                             then (ps:(factor p (ps - 1)))
                             else factor p (ps - 1)
--- My spin on factorization (lags at 8+ digits)
+--- My spin on factorization (lags at 8+ digits)
+
+-- Infix Functions --
+a `plus` b = a + b
+--
+data a `Pair` b = a `Pair` b
+                  deriving (Show)
+--
+foo' = Pair 1 2
+bar' = True `Pair` "qux"
+--
+elem "k" "kylobite"
+--- True
+4 `elem` [3,1,4,1,5,9]
+--- True
+--
+--+Data:List
+"ky" `isPrefixOf`   "kylobite"
+--- True
+"lo" `isInfixOf`    "kylobite"
+--- True
+"bite" `isSuffixOf` "kylobite"
+
+-- List Manipulations --
+-- * (++) :: [a] -> [a] -> [a]
+"foo" ++ "bar"
+--- "foobar"
+[] ++ [1,2,3]
+--- [1,2,3]
+[True] ++ []
+--- [True]
+
+-- * concat :: [[a]] -> [a]
+concat [[1,2,3],[4,5,6]]
+--- [1,2,3,4,5,6]
+
+-- * reverse :: [a] -> [a]
+reverse "foo"
+--- "oof"
+
+-- * and :: [Bool] -> Bool
+and [True,False,True]
+--- False
+and []
+--- True
+
+-- * or :: [Bool] -> Bool
+or [False,False,True]
+--- True
+or []
+--- False
+
+-- * all :: (a -> Bool) -> [a] -> Bool
+all odd [1,3,5]
+--- True
+all odd [1,2,5]
+--- False
+all []
+--- True
+-- * any :: (a -> Bool) -> [a] -> Bool
+any even [1,3,6]
+--- True
+any even []
+--- False
+
+-- Working With Sublists --
+-- * splitAt :: Int -> [a] -> ([a], [a])
+splitAt 3 "foobar"
+--- ("foo", "bar")
+
+-- * takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile odd [1,3,6,7]
+--- [1,3]
+
+-- * dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile even [2,4,5,8]
+--- [5,8]
+
+-- * span :: (a -> Bool) -> [a] -> ([a], [a])
+span even [2,4,5,8]
+--- ([2,4], [5,8])
+
+-- * break :: (a -> Bool) -> [a] -> ([a], [a])
+break even [1,3,6,7]
+--- ([1,3], [6,7])
+
+
 
 
 
