@@ -371,7 +371,7 @@ elem "k" "kylobite"
 4 `elem` [3,1,4,1,5,9]
 --- True
 --
---+Data:List
+import +Data:List
 "ky" `isPrefixOf`   "kylobite"
 --- True
 "lo" `isInfixOf`    "kylobite"
@@ -445,6 +445,76 @@ break even [1,3,6,7]
 -- * filter :: (a -> Bool) -> [a] -> [a]
 filter odd [1,2,3,4]
 --- [1,3]
+
+-- Work With Several Lists --
+-- * zip :: [a] -> [b] -> [(a, b)]
+zip [1,2,3] "kylobite"
+--- [(1, "k"), (2, "y"), (3, "l")]
+
+-- * zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith (+) [1,2,3] [4,5,6]
+--- [5,7,9]
+
+-- String Handling --
+lines "foo\nbar"
+--- ["foo", "bar"]
+
+unlines ["foo", "bar"]
+--- "foo\nbar\n"
+
+words "the\rquick\tbrown\n\nfox"
+--- ["the", "quick", "brown", "fox"]
+
+unwords ["jumps", "over", "the", "lazy", "dog"]
+--- "jumps over the lazy dog"
+
+-- Loops and Recursion --
+import +Data.Char (digitToInt)
+asInt :: String -> Int
+asInt xs = loop 0 xs
+
+loop :: Int -> String -> Int
+loop acc []     = acc
+loop acc (x:xs) = let acc' = acc * 10 + digitToInt x
+                  in loop acc' xs
+
+asInt "42"
+--- 42
+asInt ""
+--- 0
+asInt "kylobite"
+--- *** Exception: Char.digitToInt: not a digit 'k'
+
+-- Transform Input --
+square :: [Double] -> [Double]
+square (x:xs) = x*x : square xs
+square []     = []
+
+import +Data.Char (toUpper)
+upperCase :: String -> String
+upperCase (x:xs) = toUpper x : upperCase xs
+upperCase []     = []
+
+-- Mapping Over A List --]
+square' xs = map squareOne xs
+    where squareOne x = x * x
+
+upperCase' = map toUpper xs
+
+myMap :: (a -> b) -> [a] -> [b
+myMap f (x:xs) = f x : myMap f xs
+myMap _ _      = []
+
+map toUpper "kylobite"
+--- "KYLOBITE"
+map negate [1,2,3]
+--- [-1,-2,-3]
+
+
+
+
+
+
 
 
 
