@@ -561,9 +561,9 @@ adler32' xs = helper (1,0) xs
 --- This is not much better, but remember this
 
 -- The Left Fold --
-foldl :: (a -> b -> a) -> a -> [b] -> a
-foldl step zero (x:xs) = foldl step (step zero x) xs
-foldl _    zero []     = zero
+foldl' :: (a -> b -> a) -> a -> [b] -> a
+foldl' step zero (x:xs) = foldl' step (step zero x) xs
+foldl' _    zero []     = zero
 
 foldSum :: [Int] -> Int
 foldSum xs = foldl step 0 xs
@@ -587,6 +587,78 @@ adler32_foldl xs = let (a,b) = foldl step (1,0) xs
                    in (b `shiftL` 16) .|. a
     where step (a,b) x = let a' = a + (ord x .&. 0xff)
                          in (a' `mod` base, (a' + b) `mod` base)
+
+-- Folding From The Right --
+foldr' :: (a -> b -> b) -> b -> [a] -> b
+foldr' step zero (x:xs) = step x (foldr' step zero xs)
+foldr' _    zero []     = zero
+
+{-| foldr
+
+    foldr (+) 0 (1:2:3:[])
+        == 1 +           foldr (+) 0 (2:3:[])
+        == 1 + (2 +      foldr (+) 0 (3:[]))
+        == 1 + (2 + (3 + foldr (+) 0 []))
+        == 1 + (2 + (3 + 0))
+
+    1 : (2 : (3 : []))
+    1 + (2 + (3 + 0 ))
+
+-}
+
+filter' :: (a -> Bool) -> [a] -> [a]
+filter' p []    = []
+filter' p (x:xs)
+    | p x       = x : filter' p xs
+    | otherwise = filter' p xs
+
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter p xs = foldr step [] xs
+    where step x ys | p x       = x : ys
+                    | otherwise = ys
+-- Don't forget these pipes are like if-else statements
+
+-- A function expressed using foldr is 'primitive recursion'
+
+myMap' :: (a -> b) -> [a] -> [b]
+myMap' f xs = foldr step [] xs
+    where step x ys = f x : ys
+
+-- Fasten your seat belts kids
+-- We are making Foldl with Foldr
+
+myFoldl :: (a -> b -> a) -> a -> [b] -> a
+myFoldl f z xs = foldr step id xs z
+    where step x g a = g (f a x)
+-- * id :: a -> a
+
+-- Foldr transforms its input list
+
+identity :: [a] -> [a]
+identity xs = foldr (:) [] xs
+
+identity [1,2,3]
+--- [1,2,3]
+
+append :: [a] -> [a] -> [a]
+append xs ys = foldr (:) ys xs
+-- What can't foldr do?
+
+append [1,2] [3,4]
+--- [1,2,3,4]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
