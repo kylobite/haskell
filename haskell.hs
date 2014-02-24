@@ -371,7 +371,7 @@ elem "k" "kylobite"
 4 `elem` [3,1,4,1,5,9]
 --- True
 --
-import +Data:List
+import Data:List
 "ky" `isPrefixOf`   "kylobite"
 --- True
 "lo" `isInfixOf`    "kylobite"
@@ -469,7 +469,7 @@ unwords ["jumps", "over", "the", "lazy", "dog"]
 --- "jumps over the lazy dog"
 
 -- Loops and Recursion --
-import +Data.Char (digitToInt)
+import Data.Char (digitToInt)
 asInt :: String -> Int
 asInt xs = loop 0 xs
 
@@ -490,7 +490,7 @@ square :: [Double] -> [Double]
 square (x:xs) = x*x : square xs
 square []     = []
 
-import +Data.Char (toUpper)
+import Data.Char (toUpper)
 upperCase :: String -> String
 upperCase (x:xs) = toUpper x : upperCase xs
 upperCase []     = []
@@ -509,6 +509,85 @@ map toUpper "kylobite"
 --- "KYLOBITE"
 map negate [1,2,3]
 --- [-1,-2,-3]
+
+-- Select Pieces Of Input --
+oddList :: [Int] -> [Int]
+oddList (x:xs) | odd x     = x : oddList xs
+               | otherwise = oddList xs
+oddList _                  = []
+
+oddList [1,2,3,4,5]
+--- [1,3,5]
+
+-- * filter :: (a -> Bool) -> [a] -> [a]
+filter odd [1,2,3,4,5]
+--- [1,3,5]
+
+-- Computing One Answer Over Collection --
+mySum :: [Int] -> Int
+mySum xs = helper 0 xs
+    where helper acc (x:xs) = helper (acc + x) xs
+          helper acc _      = acc
+
+mySum [1,2,3,4]
+--- 10
+
+{-| Adler32
+    
+    This is a checksum that concats two 16-bit checksums
+    The first checksum is the sum of input bytes plus 1
+    The second is the sum of every other value in the first
+    The sums are passed through a modulus of 66521
+
+-}
+
+import Data.Char (ord)
+import Data.Bits (shiftL, (.&.), (.|.))
+
+base = 66521
+
+adler32 xs = helper 1 0 xs
+    where helper a b (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base
+                                  b' = (a' + b) `mod` base
+                              in helper a' b' xs
+          helper a b _      = (b `shiftL` 16) .|. a
+--- This is complicated
+
+adler32' xs = helper (1,0) xs
+    where helper (a,b) (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base
+                                    b' = (a' + b) `mod` base
+                                in helper a' b' xs
+          helper (a,b) _      = (b `shiftL` 16) .|. a
+--- This is not much better, but remember this
+
+-- The Left Fold --
+foldl :: (a -> b -> a) -> a -> [b] -> a
+foldl step zero (x:xs) = foldl step (step zero x) xs
+foldl _    zero []     = zero
+
+foldSum :: [Int] -> Int
+foldSum xs = foldl step 0 xs
+    where step acc x = acc + x
+
+niceSum :: [Int] -> Int
+niceSum xs = foldl (+) 0 xs
+
+{-| foldl
+
+    foldl (+) 0 (1:2:3:[])
+        == foldl (+) (0 + 1)             (2:3:[])
+        == foldl (+) ((0 + 1)+ 2)        (3:[])
+        == foldl (+) (((0 + 1) + 2) + 3) []
+        ==           (((0 + 1) + 2) + 3)
+
+-}
+
+-- Remeber Adler32?
+adler32_foldl xs = let (a,b) = foldl step (1,0) xs
+                   in (b `shiftL` 16) .|. a
+    where step (a,b) x = let a' = a + (ord x .&. 0xff)
+                         in (a' `mod` base, (a' + b) `mod` base)
+
 
 
 
