@@ -647,6 +647,11 @@ append xs ys = foldr (:) ys xs
 append [1,2] [3,4]
 --- [1,2,3,4]
 
+-- Laziness and Space Leaks --
+-- foldl (+) [0..1000000] is not lazy and can cause space leaks
+import Data.List
+foldl' (+) [0..1000000]
+--- 500000500000
 
 
 
