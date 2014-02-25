@@ -653,6 +653,57 @@ import Data.List
 foldl' (+) [0..1000000]
 --- 500000500000
 
+-- Lambdas!!! --
+isInAny_partial needle haystack = any inSequence haystack
+    where inSequence s = needle `isInfixOf` s
+
+isInAny_lambda needle haystack = any (\s -> needle `isInfixOf` s) haystack
+--
+safeHead (x:_) = Just x
+safeHead _     = Nothing
+
+unsafeHead :: [a] -> a
+unsafeHead = \(x:_) -> x
+
+-- unsafeHead []
+-- Exception: Non-exhaustive pattern in lambda
+-- Be careful with your lambdas!
+
+-- Partial Function Application and Currying --
+-- * dropWhile :: (a -> Bool) -> [a] -> [a]
+-- * dropWhile isSpace :: [Char] -> [Char]
+map (dropWhile isSpace) ["a ","b"," c"]
+--- ["a","b","c"]
+
+-- * zip3 :: [a] -> [b] -> [c] -> [(a, b, c)]
+zip3 "foo" "bar" "baz"
+--- [('f','b','b'),('o','a','a'),('o','r','z')]
+
+-- * zip3 "foo" :: [b] -> [c] -> [(Char, b, c)]
+zip3foo = zip3 "foo"
+
+zip3foo "bar" "baz"
+--- [('f','b','b'),('o','a','a'),('o','r','z')]
+
+-- * zip3 "foo" "bar" :: [c] -> [(Char, Char, c)]
+zip3foobar = zip3 "foo" "bar"
+
+zip3foobar "baz"
+--- [('f','b','b'),('o','a','a'),('o','r','z')]
+
+isInAny_curry needle haystack = any (isInfixOf needle) haystack
+
+niceCurrySum :: [Int] -> Int
+niceCurrySum xs = foldl (+) 0 xs
+
+niceeCurrySum :: [Int] -> Int
+nicerCurrySum   = foldl (+) 0
+-- Quick side note: Use Integer over Int for super big ints
+
+
+
+
+
 
 
 
