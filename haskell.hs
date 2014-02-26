@@ -700,6 +700,24 @@ niceeCurrySum :: [Int] -> Int
 nicerCurrySum   = foldl (+) 0
 -- Quick side note: Use Integer over Int for super big ints
 
+-- Sections --
+(1+) 2
+--- 3
+
+map (*3) [1,2]
+--- [3,6]
+
+map (2^) [3,4]
+--- [8,16]
+
+-- * (`elem` ["a".."z"]) :: Char -> Bool
+(`elem` ["a".."z"]) "e"
+--- True
+
+all (`elem` ["a".."z"]) "Fizzbuzz" -- all lowercase?
+--- False
+
+isInAny_section needle haystack = all (needle `isInfixOf`) haystack
 
 
 
