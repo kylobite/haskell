@@ -649,7 +649,7 @@ append [1,2] [3,4]
 
 -- Laziness and Space Leaks --
 -- foldl (+) [0..1000000] is not lazy and can cause space leaks
-import Data.List
+--import Data.List
 foldl' (+) [0..1000000]
 --- 500000500000
 
@@ -718,6 +718,39 @@ all (`elem` ["a".."z"]) "Fizzbuzz" -- all lowercase?
 --- False
 
 isInAny_section needle haystack = all (needle `isInfixOf`) haystack
+
+-- As-Patterns --
+tail ("foobar")
+--- "oobar"
+tail (tail "foobar")
+--- "obar"
+
+--import Data.List
+-- * tails :: [a] -> [[a]]
+tails "foobar"
+--- ["foobar","oobar","obar","bar","ar","r",""]
+-- I don't know about you, but this is cool
+-- There is also `inits`
+
+tails []
+--- [[]]
+
+-- * suffixes :: [a] -> [[a]]
+suffixes xs@(_:xs') = xs : suffixes xs'
+suffixes _          = []
+-- @ is an "as-pattern"
+-- It binds the left to the value that matches the right
+
+tails "foo"
+--- ["foo","oo","o",""]
+suffixes "foo"
+--- ["foo","oo","o"]
+
+-- To show the 'non-as-pattern' version:
+suffixes' :: [a] -> [[a]]
+suffixes' (x:xs) = (x:xs) : suffixes' xs
+suffixes' _      = []
+
 
 
 
