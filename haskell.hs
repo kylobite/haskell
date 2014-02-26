@@ -747,9 +747,41 @@ suffixes "foo"
 --- ["foo","oo","o"]
 
 -- To show the 'non-as-pattern' version:
+suffixesNoAt :: [a] -> [[a]]
+suffixesNoAt (x:xs) = (x:xs) : suffixesNoAt xs
+suffixesNoAt _      = []
+
+-- Code Reuse Through Composition --
+
+-- Suffixes and tails are similar, let's make use of that
 suffixes' :: [a] -> [[a]]
-suffixes' (x:xs) = (x:xs) : suffixes' xs
-suffixes' _      = []
+suffixes' xs = init (tails xs)
+
+suffixes' "foo"
+--- ["foo","oo","o"]
+
+-- "If A equals B, and B equals C, then A must equal C"
+compose :: (b -> c) -> (a -> b) -> a -> c
+compose f g x = f (g x)
+
+suffixes'' xs = compose init tails xs
+-- We can do better
+suffixes''' = compose init tails
+
+--Plot twist, Haskell comes with a compose function! *Dun dun duuunnnn!*
+-- * (.) :: (b -> c) -> (a -> b) -> a -> c
+suffixes_comp = init . tails
+
+-- Word of caution: Types need to match up to use (.)
+-- Remember (.)'s type signature!
+
+import Data.List (isUpper)
+capCount :: String -> Int
+capCount = length . filter (isUpper . head) . words
+-- That's a lot of functions...
+
+capCount "How Many Capital Letters Are Here?"
+--- 6
 
 
 
