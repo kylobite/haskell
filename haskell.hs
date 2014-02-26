@@ -783,7 +783,25 @@ capCount = length . filter (isUpper . head) . words
 capCount "How Many Capital Letters Are Here?"
 --- 6
 
+-- Avoiding Space Leaks With Seq --
+fold' _    zero []     = zero
+fold' step zero (x:xs) =
+    let new = step zero x
+    in  new `seq` foldl' step new xs
 
+-- * seq :: a -> t -> t
+-- Seq evals the 1st arg, then return the 2nd arg
+-- It is used to force arguments to be evaluated
+
+{-|
+    
+    foldl' (+) 1 (2:[])
+        let new = 1 + 2
+        in  new `seq` foldl' (+) new []
+        foldl' (+) 3 []
+        3
+
+-}
 
 
 
