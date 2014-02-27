@@ -803,6 +803,15 @@ fold' step zero (x:xs) =
 
 -}
 
+-- Learning To Use Seq --
+
+strictPair :: (a,b) -> (a,b)
+strictPair (a,b) = a `seq` b `seq` (a,b)
+
+strictList :: [a] -> [a]
+strictList (x:xs) = x `seq` x : strictList xs
+strictList []     = []
+
 
 
 
