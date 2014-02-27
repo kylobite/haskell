@@ -1,5 +1,5 @@
 -- *
---- learn.hs
+--- haskell.hs
 -- *
 
 -- It
