@@ -850,20 +850,26 @@ isNull :: JValue -> Bool
 isNull v            = (v == JNull)
 
 -- The Anatomy of a Haskell Module --
-{-| module must be on first line
+-- See json/SimpleJSON.hs
 
-    module SimpleJSON
-        (
-          JValue(..) -- (..) = export type and constructors
-        , getString
-        , getInt
-        , getDouble
-        , getObject
-        , getArray
-        , isNull
-        ) where
+-- Compiling Haskell Code --
 
--}
+-- ghc -c SimpleJSON.hs
+--- Generates only object code (.hi, .o)
+--- .hi - interface file
+--- .o  - object file
+
+-- See json/MainJSON.hs
+
+-- ghc -o simple Main.hs
+--- ghc -o [program name] [source code]
+-- ./simple
+--- JObject [("foo",JNumber 1.0),("bar",JBool False)]
+
+-- Printing JSON Data --
+-- See json/PutJSON.hs
+
+
 
 
 
