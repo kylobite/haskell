@@ -849,6 +849,24 @@ getArray _          = Nothing
 isNull :: JValue -> Bool
 isNull v            = (v == JNull)
 
+-- The Anatomy of a Haskell Module --
+{-| module must be on first line
+
+    module SimpleJSON
+        (
+          JValue(..) -- (..) = export type and constructors
+        , getString
+        , getInt
+        , getDouble
+        , getObject
+        , getArray
+        , isNull
+        ) where
+
+-}
+
+
+
 
 
 
