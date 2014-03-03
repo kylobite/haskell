@@ -869,9 +869,11 @@ isNull v            = (v == JNull)
 -- Printing JSON Data --
 -- See json/PutJSON.hs
 
+-- Type Inference is a Double-Edged Sword --
+-- Long story short, provide a type signature as often you can
 
-
-
+-- A More General Look at Rendering
+-- See json/PrettyJSON.hs
 
 
 
