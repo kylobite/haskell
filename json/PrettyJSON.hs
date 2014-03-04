@@ -2,32 +2,6 @@ import Numeric (showHex)
 import Data.Char (ord)
 import Data.Bits (shiftR, (.&.))
 
--- Stubs
-data Doc = ToBeDefined
-           deriving (Show)
-
-string :: String -> Doc
-string = enclose '"' '"' . hcat . map oneChar
-
-double :: Double -> Doc
-double n = undefined
-
-text :: String -> Doc
-text t = undefined
-
--- undefined :: a
-
-(<>) :: Doc -> Doc -> Doc
-a <> b = undefined
--- Append two Docs
-
-char :: Char -> Doc
-char = undefined
-
-hcat :: [Doc] -> Doc
-hcat xs = undefined
--- Concat Docs together
-
 oneChar :: Char -> Doc
 oneChar c = case lookup c simpleEscapes of
                 Just r -> text r
@@ -63,13 +37,21 @@ enclose :: Char -> Char -> Doc -> Doc
 enclose l r x = char l <> x <> char r -- left, right
 -- Wraps Doc with open/close char
 
-renderValue :: JValue -> Doc
-renderValue (JString s)   = string s
-renderValue (JNumber n)   = double n
-renderValue (JBool True)  = text "True"
-renderValue (JBool False) = text "False"
-renderValue  JNull        = text "Null"
+series :: Char -> Char -> (a -> Doc) -> [a] -> Doc
+series o c item = enclose o c -- open, close
+                . fsep . punctuate (char ",") . map item
 
+renderJValue :: JValue -> Doc
+renderJValue (JString s)   = string s
+renderJValue (JNumber n)   = double n
+renderJValue (JBool True)  = text "True"
+renderJValue (JBool False) = text "False"
+renderJValue  JNull        = text "Null"
+renderJValue (JArray ary)  = series "[" "]" renderJValue ary
+renderJValue (JObject obj) = series "{" "}" field obj
+    where field (name,val) = string name
+                          <> text ": "
+                          <> renderJValue val
 
 
 
