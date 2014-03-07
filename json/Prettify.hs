@@ -69,3 +69,92 @@ punctuate p []      = []
 punctuate p [d]     = [d]
 punctuate p (d:ds)  = (d <> p) : punctuate p ds
 -- Append Docs between punctuation
+
+compact :: Doc -> String
+compact x = transform [x]
+    where transform []     = ""
+          transform (x:xs) =
+            case x of
+                Empty        -> transform xs
+                Char c       -> c : transform xs
+                Text s       -> s ++ transform xs
+                Line         -> "\n" : transform xs
+                a `Concat` b -> transform (a:b:xs)
+                a `Union` _  -> transform (a:xs)
+-- Compacts Doc into a String
+
+pretty :: Int -> Doc -> String
+pretty width x = best 0 [x]
+    where best col (x:xs) =
+            case x of
+                Empty        -> best col xs
+                Char c       -> c :  best (col + 1) xs
+                Text s       -> s ++ best (col + length s) xs
+                Line         -> "\n" : best 0 xs
+                a `Concat` b -> best col (a:b:xs)
+                a `Union` b  -> nicest col (best (a:xs))
+                                           (best (b:xs))
+          best _ _ = ""
+
+          nicest col a b | (width - least) `fits` a = a
+                         | otherwise                = b
+                         where least = min width col
+-- True pretty printing
+
+fits :: Int -> String -> Bool
+w `fits` _ | w < 0 = False
+w `fits` ""        = True
+w `fits` ("\n":_)  = True
+w `fits` (x:xs)    = (w - 1) `fits` xs
+-- Does this or that fit better here?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
