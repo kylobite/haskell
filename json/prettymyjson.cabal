@@ -1,0 +1,18 @@
+Name:       prettymyjson
+Version:    0.1
+
+Synopsis:   Library that pretty prints JSON
+Description:
+    A library from Real World Haskell 
+    that lets Haskell pretty print JSON
+Author:     kylobite | Real World Haskell
+Maintainer: username@email.com
+-- Spoiler alert: not my real email
+
+Cabal-Version: >= 1.2
+library
+    Exposed-Modules: Prettify
+                     PrettyJSON
+                     SimpleJSON
+    Build-Depends:   base >= 2.0
+-- Other-Modules :: Required for library, users don't see
