@@ -878,7 +878,41 @@ stringEq _  _  = False
 
 -- Problem: We need to do this for every type, and have to cheat as well
 
+-- What are Typeclasses?
+class BasicEq a where
+    isEqual :: a -> a -> Bool
+-- Class is not an OOP class
 
+instance BasicEq Bool where
+    isEqual True  True  = True
+    isEqual False False = True
+    isEqual _     _     = False
+-- We can use instances of typeclasses for certain types (e.g. Bool)
+-- This particular instance only works for Bool, nothing else
+
+-- We should probably add a not-equal function
+
+class BasicEq2 a where
+    isEqual2    :: a -> a -> Bool
+    isNotEqual2 :: a -> a -> Bool
+
+-- Hmm, not good enough
+
+class BasicEq3 a where
+    isEqual3    :: a -> a -> Bool
+    isEqual3 x y    = not (isNotEqual3 x y)
+
+    isNotEqual3 :: a -> a -> Bool
+    isNotEqual3 x y = not (isEqual3 x y)
+
+{-| The actual Eq typeclass
+
+    class Eq a where
+        (==),(/=) :: a -> a -> Bool
+        x == y = not (x /= y)
+        x /= y = not (x == y)
+
+-}
 
 
 
