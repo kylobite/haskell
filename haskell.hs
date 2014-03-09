@@ -804,7 +804,6 @@ fold' step zero (x:xs) =
 -}
 
 -- Learning To Use Seq --
-
 strictPair :: (a,b) -> (a,b)
 strictPair (a,b) = a `seq` b `seq` (a,b)
 
@@ -850,35 +849,34 @@ isNull :: JValue -> Bool
 isNull v            = (v == JNull)
 
 -- The Anatomy of a Haskell Module --
--- See json/SimpleJSON.hs
+-- See json/*
 
 -- Compiling Haskell Code --
-
--- ghc -c SimpleJSON.hs
+-- ghc -c [source code]
 --- Generates only object code (.hi, .o)
---- .hi - interface file
---- .o  - object file
-
--- See json/MainJSON.hs
-
--- ghc -o simple Main.hs
+---   .hi - interface file
+---   .o  - object file
 --- ghc -o [program name] [source code]
--- ./simple
---- JObject [("foo",JNumber 1.0),("bar",JBool False)]
-
--- Printing JSON Data --
--- See json/PutJSON.hs
-
--- Type Inference is a Double-Edged Sword --
--- Long story short, provide a type signature as often you can
-
--- A More General Look at Rendering
--- See json/PrettyJSON.hs
-
 -- undefined :: a ; Used as a TODO value
 
+-- The Need for Typeclasses --
+--- Situation: Equity test `==` is removed. What do?
+data Color = Red | Blue | Green
 
+colorEq :: Color -> Color -> Bool
+colorEq Red   Red   = True
+colorEq Blue  Blue  = True
+colorEq Green Green = True
+colorEq _     _     = False
+-- Custom type checking
 
+stringEq :: [Char] -> [Char] -> Bool
+stringEq [] [] = True
+stringEq (x:xs) (y:ys) = x == y && stringEq xs ys -- Yes, we cheated
+stringEq _  _  = False
+-- String type checking
+
+-- Problem: We need to do this for every type, and have to cheat as well
 
 
 
