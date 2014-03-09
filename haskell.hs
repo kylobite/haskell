@@ -1,4 +1,4 @@
--- Real World Haskell
+-- Real World Haskell & Learn You A Haskell
 
 -- It --
 x = 0
@@ -876,7 +876,7 @@ stringEq _  _  = False
 
 -- Problem: We need to do this for every type, and have to cheat as well
 
--- What are Typeclasses?
+-- What are Typeclasses? --
 class BasicEq a where
     isEqual :: a -> a -> Bool
 -- Class is not an OOP class
@@ -911,6 +911,38 @@ class BasicEq3 a where
         x /= y = not (x == y)
 
 -}
+
+-- Declaring Typeclass Instances --
+instance BasicEq3 Color where
+    isEqual3 Red   Red   = True
+    isEqual3 Green Green = True
+    isEqual3 Blue  Blue  = True
+    isEqual3 _     _     = False
+-- `isEqual3` is not defined, so the default is used
+-- This as well solves the problem in `The Need for Typeclasses`
+
+-- The Show Typeclass --
+-- * show :: (Show a) => a -> String
+-- `show` converts data to a String
+
+show 1       --- "1"
+show [1,2,3] --- "[1,2,3]"
+show (1, 2)  --- "(1,2)"
+
+putStrLn (show 1)       --- 1
+putStrLn (show [1,2,3]) --- [1,2,3]
+
+show "String"            --- "\"String\""
+putStrLn (show "String") --- "String"
+-- It is less confusing to avoid `show` on Strings
+
+instance Show Color where
+    show Red   = "Red"
+    show Green = "Green"
+    show Blue  = "Blue"
+-- Define custom types their `show` version
+
+
 
 
 
