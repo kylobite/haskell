@@ -1,8 +1,6 @@
--- *
---- haskell.hs
--- *
+-- Real World Haskell
 
--- It
+-- It --
 x = 0
 succ x --- 1
 y = it --- 1

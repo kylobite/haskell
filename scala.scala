@@ -1,5 +1,3 @@
-// scala.scala
-
 println("Hello, World!")
 /// "Hello, World!"
 

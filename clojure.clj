@@ -1,6 +1,3 @@
-
-; clojure.clj
-
 0 ; numbers
 
 "String" ; strings
