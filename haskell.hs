@@ -1,5 +1,6 @@
 -- Real World Haskell & Learn You A Haskell
 
+-- ~ RWH
 -- It --
 x = 0
 succ x --- 1
@@ -941,6 +942,29 @@ instance Show Color where
     show Green = "Green"
     show Blue  = "Blue"
 -- Define custom types their `show` version
+
+-- ~ LYAH
+-- Intro to Lists --
+-- * (!!) -> [a] -> Int -> a
+
+"Haskell" !! 3  --- "s"
+[1,2,3] !! 1    ---  2
+
+product [1,2,3] ---  6
+
+-- * cycle :: [a] -> [a]
+take 5 (cycle [1,2,3])
+--- [1,2,3,1,2]
+
+-- * repeat :: a -> [a]
+take 5 (repeat 0)
+--- [0,0,0,0,0]
+
+-- * replicate :: Int -> a -> [a]
+replicate 5 0
+--- [0,0,0,0,0]
+
+
 
 
 
