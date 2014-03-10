@@ -11,6 +11,8 @@ y = it --- 1
 sqrt 16         --- 4
 succ 32         --- 33
 pred 64         --- 63
+min 1 2         --- 1
+max 1 2         --- 2
 sin (pi / 2)    --- 1.0
 truncate pi     --- 3
 round pi        --- 3
@@ -543,18 +545,18 @@ mySum [1,2,3,4]
 import Data.Char (ord)
 import Data.Bits (shiftL, (.&.), (.|.))
 
-base = 66521
+base' = 66521
 
 adler32 xs = helper 1 0 xs
-    where helper a b (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base
-                                  b' = (a' + b) `mod` base
+    where helper a b (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base'
+                                  b' = (a' + b) `mod` base'
                               in helper a' b' xs
           helper a b _      = (b `shiftL` 16) .|. a
 --- This is complicated
 
 adler32' xs = helper (1,0) xs
-    where helper (a,b) (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base
-                                    b' = (a' + b) `mod` base
+    where helper (a,b) (x:xs) = let a' = (a + (ord x .&. 0xff)) `mod` base'
+                                    b' = (a' + b) `mod` base'
                                 in helper a' b' xs
           helper (a,b) _      = (b `shiftL` 16) .|. a
 --- This is not much better, but remember this
@@ -585,7 +587,7 @@ niceSum xs = foldl (+) 0 xs
 adler32_foldl xs = let (a,b) = foldl step (1,0) xs
                    in (b `shiftL` 16) .|. a
     where step (a,b) x = let a' = a + (ord x .&. 0xff)
-                         in (a' `mod` base, (a' + b) `mod` base)
+                         in (a' `mod` base', (a' + b) `mod` base')
 
 -- Folding From The Right --
 foldr' :: (a -> b -> b) -> b -> [a] -> b
@@ -963,6 +965,17 @@ take 5 (repeat 0)
 -- * replicate :: Int -> a -> [a]
 replicate 5 0
 --- [0,0,0,0,0]
+
+-- List Comprehension --
+
+[x*2 | x <- [1..5]] -- 1 to 5, all times 2
+--- [2,4,6,8,10]
+
+[x*2 | x <- [1..5], x*2 >= 6] -- 1 to 5, all times 2 of 6+
+--- [6,8,10]
+
+[x | x <- [1..20], x `mod` 3 == 0] -- 1 to 20, all mod 3 is 0
+--- [3,6,9,12,15,18]
 
 
 
