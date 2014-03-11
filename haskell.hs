@@ -1020,8 +1020,17 @@ read "42" :: Float
 read "[1,2,3]" :: [Int]
 --- [1,2,3]
 
-read "(1, \"one\")" :: [Int, String]
+read "(1, \"one\")" :: (Int, String)
 --- (1, "one")
+
+-- As-patterns (revisited) --
+firstLetter :: String -> String
+firstLetter ""         = "Your parameter is empty, shame on you!"
+firstLetter all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]
+firstLetter "Fizzbuzz"
+--- "The first letter of Fizzbuzz is F"
+
+-- ~ RWH
 
 
 
