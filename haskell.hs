@@ -711,11 +711,11 @@ map (*3) [1,2]
 map (2^) [3,4]
 --- [8,16]
 
--- * (`elem` ["a".."z"]) :: Char -> Bool
-(`elem` ["a".."z"]) "e"
---- True
+-- * (`elem` ['a'..'z']) :: Char -> Bool
+(`elem` ['a'..'z']) "e"
+--- True | The single quotes are important
 
-all (`elem` ["a".."z"]) "Fizzbuzz" -- all lowercase?
+all (`elem` ['a'..'z']) "Fizzbuzz" -- all lowercase?
 --- False
 
 isInAny_section needle haystack = all (needle `isInfixOf`) haystack
@@ -977,6 +977,51 @@ replicate 5 0
 [x | x <- [1..20], x `mod` 3 == 0] -- 1 to 20, all mod 3 is 0
 --- [3,6,9,12,15,18]
 
+[x*y | x <- [2,5,10], y <- [8,10,11]]
+--- [16,20,22,40,50,55,80,100,110]
+-- List B elements are distributed to list A elements
+
+[x*y | x <- [2,5,10], y <- [8,10,11], x*y > 50]
+--- [55,80,100,110]
+
+length' :: [a] -> Int
+length' xs = sum [1 | _ <- xs]
+length' [1,2,3,4]
+--- 4 | [1,1,1,1] | 1 + 1 + 1 + 1
+
+notUppercase :: String -> String
+notUppercase s = [x | x <- s, x `elem` ['a'..'z']]
+notUppercase "cXaXt"
+--- "cat"
+
+xxs = [[1,2,3],[4,5,6],[7,8,9]]
+[[x | x <- xs, even xs] | xs <- xxs]
+--- [[2],[4,6],[8]]
+
+-- Read --
+-- * read :: (Read a) => String -> a ; Opposite of `show`
+
+read "True" || False
+--- True
+
+read "2.6" + 2.4
+--- 5.0
+
+read "[1,2,3]" ++ [4]
+--- [1,2,3,4]
+
+-- (read "42") will error, it needs to know the type
+read "42" :: Int
+--- 42
+
+read "42" :: Float
+--- 42.0
+
+read "[1,2,3]" :: [Int]
+--- [1,2,3]
+
+read "(1, \"one\")" :: [Int, String]
+--- (1, "one")
 
 
 
