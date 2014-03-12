@@ -1031,7 +1031,50 @@ firstLetter "Fizzbuzz"
 --- "The first letter of Fizzbuzz is F"
 
 -- ~ RWH
+-- Read (Again) --
+-- * read :: (Read a) => String -> a ; Opposite of `show`
 
+-- () are good for preventing errors around other code
+(read "42")::Int
+--- 42
+
+(read "42")::Double
+--- 42.0
+
+(read "42.0")::Double
+--- 42.0
+
+-- (read "42.0")::Int
+--- Error!
+
+-- Read has a special `readsPrec` function
+instance Read Color where
+    readsPrec _ value =
+        tryParse[("Red",Red),("Green",Green),("Blue",Blue)]
+        where tryParse [] = []
+              tryParse ((attempt,result):xs) =
+                if (take (length attempt) value) == attempt
+                then [(result, drop (length attempt) value)]
+                else tryParse xs
+
+-- I don't really need () here, this looks cleaner
+read "Red" :: Color
+--- Red
+
+read "Green" :: Color
+--- Green
+
+read "Blue" :: Color
+--- Blue
+
+read "[Red]" :: [Color]
+--- [Red]
+
+read "[Red,Red,Red]" :: [Color]
+--- [Red,Red,Red]
+
+-- read "[Red, Red, Red]" :: [Color]
+--- Error! Spaces--do not compute
 
 
 
