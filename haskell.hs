@@ -1076,6 +1076,28 @@ read "[Red,Red,Red]" :: [Color]
 -- read "[Red, Red, Red]" :: [Color]
 --- Error! Spaces--do not compute
 
+-- # writeFile filename contents | this will write to a file
+
+-- Fun Time! --
+factorial :: Integer -> Integer
+factorial 0 = 1
+factorial n = foldr (*) 1 [1..n]
+
+interFact :: Integer -> Integer
+interFact range = loop 0 range where
+    loop n range | range == 0 = n
+                 | otherwise  = loop (n * range) (range - 1)
+
+-- I didn't write this, but I wanted to know how it worked
+quicksort :: (Ord a) => [a] -> [a]
+quicksort []      = []
+quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
+    where lesser  = filter (<  x) xs
+          greater = filter (>= x) xs
+
+
+
+
 
 
 
