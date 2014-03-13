@@ -1095,7 +1095,31 @@ quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
     where lesser  = filter (<  x) xs
           greater = filter (>= x) xs
 
+-- Relaxing Some Restrictions on Typeclasses --
+{-|
+    
+    {-# LANGUAGE TypeSynonymInstances, OverlappingInstances #}
+    -- Used to allow [Char]/String as an instance
+    -- Use #- instead of # to end it, I did this to maintain this comment
+    -- Overlapping is used to allow GHC to pick which instance to use
 
+    import Data.List
+
+    class Foo a where
+        foo :: a -> String
+
+    instance Foo a => Foo [a] where
+        foo = concat . intersperse ", " . map foo
+
+    instance Foo Char where
+        foo c = [c]
+
+    instance Foo String where
+        foo = id
+
+    -- `foo` applied to a String will use the String instance, not Char or [a]
+
+-}
 
 
 
