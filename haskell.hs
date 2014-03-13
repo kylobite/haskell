@@ -1135,6 +1135,17 @@ N 1 < N 2
 -- N 1 + N 2
 --- Error! We are not exposing their instance values, so we can't do this
 
+-- More Fun With Haskell --
+primes n = take n gen where
+            gen     = [2] ++ [x | x <- mapP [3,5..], x>0] where
+            mapP xs = map (\(a,b) -> if not b then a else -1) $ zip xs $ map test xs
+            test x  = or $ map (\y -> mod x y == 0) [2..(x - 1)]
+-- Generates infinite list of primes, request how many you want
+
+-- Elegant (yet slow) implementation I found, I'm keeping it here for referencing
+primes = sieve [2..]
+sieve (p : xs) = p : sieve [x | x <− xs, x ‘mod‘ p > 0]
+
 
 
 
