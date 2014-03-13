@@ -42,3 +42,74 @@ def greet() = println("Hello!")
 /// greet: ()Unit
 
 if (args.length > 0) println("The first argument is: " + args(0))
+
+var i = 0
+while (i < args.length) {
+    println(args(i))
+    i += 1
+}
+/*
+    arg0
+    arg1
+    arg2
+ */
+
+var i = 0;
+while (i < args.length) {
+    if (i != 0)
+        print(" ")
+    println(args(i))
+    i += 1
+}
+println()
+/// arg0 arg1 arg2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
