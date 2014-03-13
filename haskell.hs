@@ -1121,6 +1121,19 @@ quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
 
 -}
 
+-- Give Types a New Identity --
+data DataInt = D Int
+    deriving (Eq, Ord, Show)
+
+newtype NewtypeInt = N Int
+    deriving (Eq, Ord, Show)
+-- newtype renames similar data types
+
+N 1 < N 2
+--- True
+
+-- N 1 + N 2
+--- Error! We are not exposing their instance values, so we can't do this
 
 
 
