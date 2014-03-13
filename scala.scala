@@ -22,6 +22,23 @@ println(msg3)
 /// "I can change."
 
 val msg4 =
-    | "Look ma, multiple lines!"
+    "Look ma, multiple lines!"
 println(msg4)
 /// "Look ma, multiple lines!"
+
+def max(x: Int, y: Int): Int = {
+    if (x > y) x
+    else y
+}
+/// max: (x: Int,y: Int)Int
+
+def max2(x: Int, y: Int) = if (x > y) x else y
+/// max2: (x: Int,y: Int)Int
+
+max(1, 2)
+/// 2
+
+def greet() = println("Hello!")
+/// greet: ()Unit
+
+if (args.length > 0) println("The first argument is: " + args(0))
