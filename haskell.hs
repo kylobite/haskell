@@ -1139,12 +1139,60 @@ N 1 < N 2
 primes n = take n gen where
             gen     = [2] ++ [x | x <- mapP [3,5..], x>0] where
             mapP xs = map (\(a,b) -> if not b then a else -1) $ zip xs $ map test xs
-            test x  = or $ map (\y -> mod x y == 0) [2..(x - 1)]
+            test x  = or $ map (\y -> mod x y == 0) [2..x - 1]
 -- Generates infinite list of primes, request how many you want
 
 -- Elegant (yet slow) implementation I found, I'm keeping it here for referencing
 primes = sieve [2..]
 sieve (p : xs) = p : sieve [x | x <− xs, x ‘mod‘ p > 0]
+
+-- Data vs Newtype --
+-- What is valid and invalid
+
+-- Valid :: Any amount of fields and constructors
+data TwoFields = TwoFields Int Int
+
+-- Valid :: Exactly one field
+newtype Okay = ExactlyOne Int
+
+-- Valid :: Type parameters are okay
+newtype Param a b = Param (Either a b)
+
+-- Valid :: Record syntax is okay
+newtype Record = Record {
+    getInt :: Int
+}
+
+-- Invalid :: No fields
+-- newtype TooFew = TooFew
+
+-- Invalid :: Too many fields
+-- newtype TooManyFields = TooManyFields Int Int
+
+-- Invalid :: Too many constructros
+-- newtype TooManyCtors = Bad Int
+--                      | Worse Int
+
+-- # Data uses compile+runtime resources, newtype uses only compile time
+
+{-| undefined works differently between data and newtype
+
+    case D undefined of D _ -> 1
+    --- 1
+
+    case   undefined of D _ -> 1
+    --- Error
+
+    case N undefined of N _ -> 1
+    --- 1
+
+    case   undefined of N _ -> 1
+    --- 1
+
+-}
+
+
+
 
 
 
