@@ -533,7 +533,7 @@ mySum xs = helper 0 xs
 mySum [1,2,3,4]
 --- 10
 
-{-| Adler32
+{- Adler32
     
     This is a checksum that concats two 16-bit checksums
     The first checksum is the sum of input bytes plus 1
@@ -573,7 +573,7 @@ foldSum xs = foldl step 0 xs
 niceSum :: [Int] -> Int
 niceSum xs = foldl (+) 0 xs
 
-{-| foldl
+{- foldl
 
     foldl (+) 0 (1:2:3:[])
         == foldl (+) (0 + 1)             (2:3:[])
@@ -594,7 +594,7 @@ foldr' :: (a -> b -> b) -> b -> [a] -> b
 foldr' step zero (x:xs) = step x (foldr' step zero xs)
 foldr' _    zero []     = zero
 
-{-| foldr
+{- foldr
 
     foldr (+) 0 (1:2:3:[])
         == 1 +           foldr (+) 0 (2:3:[])
@@ -697,7 +697,7 @@ isInAny_curry needle haystack = any (isInfixOf needle) haystack
 niceCurrySum :: [Int] -> Int
 niceCurrySum xs = foldl (+) 0 xs
 
-niceeCurrySum :: [Int] -> Int
+nicerCurrySum :: [Int] -> Int
 nicerCurrySum   = foldl (+) 0
 -- Quick side note: Use Integer over Int for super big ints
 
@@ -794,7 +794,7 @@ fold' step zero (x:xs) =
 -- Seq evals the 1st arg, then return the 2nd arg
 -- It is used to force arguments to be evaluated
 
-{-|
+{-
     
     foldl' (+) 1 (2:[])
         let new = 1 + 2
@@ -906,7 +906,7 @@ class BasicEq3 a where
     isNotEqual3 :: a -> a -> Bool
     isNotEqual3 x y = not (isEqual3 x y)
 
-{-| The actual Eq typeclass
+{- The actual Eq typeclass
 
     class Eq a where
         (==),(/=) :: a -> a -> Bool
@@ -1096,7 +1096,7 @@ quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
           greater = filter (>= x) xs
 
 -- Relaxing Some Restrictions on Typeclasses --
-{-|
+{-
     
     {-# LANGUAGE TypeSynonymInstances, OverlappingInstances #}
     -- Used to allow [Char]/String as an instance
@@ -1175,7 +1175,7 @@ newtype Record = Record {
 
 -- # Data uses compile+runtime resources, newtype uses only compile time
 
-{-| undefined works differently between data and newtype
+{- undefined works differently between data and newtype
 
     case D undefined of D _ -> 1
     --- 1
@@ -1191,7 +1191,23 @@ newtype Record = Record {
 
 -}
 
+-- Three Ways to Name Types --
+-- data    :: true algebraic data types
+-- type    :: makes synonyms for types
+-- newtype :: changes an existing type
 
+-- Monomorphism Restriction --
+
+-- Monomorphism is sneaky and evil
+-- myShow1 = show
+--- Error! ( myShow1 :: () -> String )
+
+myShow2 x = show x
+
+myShow3 :: (Show a) => a -> String
+myShow3 = show
+
+-- myShow2,3 will work
 
 
 
