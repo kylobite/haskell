@@ -1,5 +1,11 @@
 -- Real World Haskell & Learn You A Haskell
 
+import Data.Char (digitToInt,toUpper,isUpper,ord)
+import Data.Bits (shiftL, (.&.), (.|.))
+import Data.List (isPrefixOf,isInfixOf,isSuffixOf)
+
+-- Regex for bare functions: ^\s{4}\w(?!ata|ewtype|ype).*=\s
+
 -- ~ RWH
 -- It --
 x = 0
@@ -372,7 +378,7 @@ elem "k" "kylobite"
 4 `elem` [3,1,4,1,5,9]
 --- True
 --
-import Data:List
+-- import Data.List
 "ky" `isPrefixOf`   "kylobite"
 --- True
 "lo" `isInfixOf`    "kylobite"
@@ -470,7 +476,7 @@ unwords ["jumps", "over", "the", "lazy", "dog"]
 --- "jumps over the lazy dog"
 
 -- Loops and Recursion --
-import Data.Char (digitToInt)
+-- import Data.Char (digitToInt)
 asInt :: String -> Int
 asInt xs = loop 0 xs
 
@@ -491,7 +497,7 @@ square :: [Double] -> [Double]
 square (x:xs) = x*x : square xs
 square []     = []
 
-import Data.Char (toUpper)
+-- import Data.Char (toUpper)
 upperCase :: String -> String
 upperCase (x:xs) = toUpper x : upperCase xs
 upperCase []     = []
@@ -502,7 +508,7 @@ square' xs = map squareOne xs
 
 upperCase' = map toUpper xs
 
-myMap :: (a -> b) -> [a] -> [b
+myMap :: (a -> b) -> [a] -> [b]
 myMap f (x:xs) = f x : myMap f xs
 myMap _ _      = []
 
@@ -542,8 +548,8 @@ mySum [1,2,3,4]
 
 -}
 
-import Data.Char (ord)
-import Data.Bits (shiftL, (.&.), (.|.))
+-- import Data.Char (ord)
+-- import Data.Bits (shiftL, (.&.), (.|.))
 
 base' = 66521
 
@@ -776,7 +782,7 @@ suffixes_comp = init . tails
 -- Word of caution: Types need to match up to use (.)
 -- Remember (.)'s type signature!
 
-import Data.List (isUpper)
+-- import Data.Char (isUpper)
 capCount :: String -> Int
 capCount = length . filter (isUpper . head) . words
 -- That's a lot of functions...
@@ -1010,18 +1016,20 @@ read "2.6" + 2.4
 read "[1,2,3]" ++ [4]
 --- [1,2,3,4]
 
--- (read "42") will error, it needs to know the type
-read "42" :: Int
---- 42
+{-
+    -- (read "42") will error, it needs to know the type
+    (read "42")::Int
+    --- 42
 
-read "42" :: Float
---- 42.0
+    (read "42")::Double
+    --- 42.0
 
-read "[1,2,3]" :: [Int]
---- [1,2,3]
+    (read "[1,2,3]")::[Int]
+    --- [1,2,3]
 
-read "(1, \"one\")" :: (Int, String)
---- (1, "one")
+    (read "(1, \"one\")")::(Int, String)
+    --- (1, "one")
+-}
 
 -- As-patterns (revisited) --
 firstLetter :: String -> String
@@ -1035,17 +1043,19 @@ firstLetter "Fizzbuzz"
 -- * read :: (Read a) => String -> a ; Opposite of `show`
 
 -- () are good for preventing errors around other code
-(read "42")::Int
---- 42
+{-
+    (read "42")::Int
+    --- 42
 
-(read "42")::Double
---- 42.0
+    (read "42")::Double
+    --- 42.0
 
-(read "42.0")::Double
---- 42.0
+    (read "42.0")::Double
+    --- 42.0
 
--- (read "42.0")::Int
---- Error!
+    -- (read "42.0")::Int
+    --- Error!
+-}
 
 -- Read has a special `readsPrec` function
 instance Read Color where
@@ -1057,21 +1067,22 @@ instance Read Color where
                 then [(result, drop (length attempt) value)]
                 else tryParse xs
 
--- I don't really need () here, this looks cleaner
-read "Red" :: Color
---- Red
+{- I don't really need () here, this looks cleaner
+    read "Red" :: Color
+    --- Red
 
-read "Green" :: Color
---- Green
+    read "Green" :: Color
+    --- Green
 
-read "Blue" :: Color
---- Blue
+    read "Blue" :: Color
+    --- Blue
 
-read "[Red]" :: [Color]
---- [Red]
+    read "[Red]" :: [Color]
+    --- [Red]
 
-read "[Red,Red,Red]" :: [Color]
---- [Red,Red,Red]
+    read "[Red,Red,Red]" :: [Color]
+    --- [Red,Red,Red]
+-}
 
 -- read "[Red, Red, Red]" :: [Color]
 --- Error! Spaces--do not compute
@@ -1098,9 +1109,9 @@ quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
 -- Relaxing Some Restrictions on Typeclasses --
 {-
     
-    {-# LANGUAGE TypeSynonymInstances, OverlappingInstances #}
+    {# LANGUAGE TypeSynonymInstances, OverlappingInstances #}
     -- Used to allow [Char]/String as an instance
-    -- Use #- instead of # to end it, I did this to maintain this comment
+    -- Use {--} instead of {##} I did this to maintain this comment
     -- Overlapping is used to allow GHC to pick which instance to use
 
     import Data.List
@@ -1144,7 +1155,7 @@ primes n = take n gen where
 
 -- Elegant (yet slow) implementation I found, I'm keeping it here for referencing
 primes = sieve [2..]
-sieve (p : xs) = p : sieve [x | x <− xs, x ‘mod‘ p > 0]
+sieve (p : xs) = p : sieve [x | x <− xs, x `mod` p > 0]
 
 -- Data vs Newtype --
 -- What is valid and invalid
@@ -1208,6 +1219,8 @@ myShow3 :: (Show a) => a -> String
 myShow3 = show
 
 -- myShow2,3 will work
+
+
 
 
 
