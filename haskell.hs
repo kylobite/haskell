@@ -1016,20 +1016,20 @@ read "2.6" + 2.4
 read "[1,2,3]" ++ [4]
 --- [1,2,3,4]
 
-{-
-    -- (read "42") will error, it needs to know the type
-    (read "42")::Int
-    --- 42
 
-    (read "42")::Double
-    --- 42.0
+-- (read "42") will error, it needs to know the type
+(read "42")::Int
+--- 42
 
-    (read "[1,2,3]")::[Int]
-    --- [1,2,3]
+(read "42")::Double
+--- 42.0
 
-    (read "(1, \"one\")")::(Int, String)
-    --- (1, "one")
--}
+(read "[1,2,3]")::[Int]
+--- [1,2,3]
+
+(read "(1, \"one\")")::(Int, String)
+--- (1, "one")
+
 
 -- As-patterns (revisited) --
 firstLetter :: String -> String
@@ -1043,19 +1043,19 @@ firstLetter "Fizzbuzz"
 -- * read :: (Read a) => String -> a ; Opposite of `show`
 
 -- () are good for preventing errors around other code
-{-
-    (read "42")::Int
-    --- 42
 
-    (read "42")::Double
-    --- 42.0
+(read "42")::Int
+--- 42
 
-    (read "42.0")::Double
-    --- 42.0
+(read "42")::Double
+--- 42.0
 
-    -- (read "42.0")::Int
-    --- Error!
--}
+(read "42.0")::Double
+--- 42.0
+
+-- (read "42.0")::Int
+--- Error!
+
 
 -- Read has a special `readsPrec` function
 instance Read Color where
@@ -1067,22 +1067,21 @@ instance Read Color where
                 then [(result, drop (length attempt) value)]
                 else tryParse xs
 
-{- I don't really need () here, this looks cleaner
-    read "Red" :: Color
-    --- Red
+-- I don't really need () here, this looks cleaner
+read "Red" :: Color
+--- Red
 
-    read "Green" :: Color
-    --- Green
+read "Green" :: Color
+--- Green
 
-    read "Blue" :: Color
-    --- Blue
+read "Blue" :: Color
+--- Blue
 
-    read "[Red]" :: [Color]
-    --- [Red]
+read "[Red]" :: [Color]
+--- [Red]
 
-    read "[Red,Red,Red]" :: [Color]
-    --- [Red,Red,Red]
--}
+read "[Red,Red,Red]" :: [Color]
+--- [Red,Red,Red]
 
 -- read "[Red, Red, Red]" :: [Color]
 --- Error! Spaces--do not compute
@@ -1220,7 +1219,8 @@ myShow3 = show
 
 -- myShow2,3 will work
 
-
+-- Working with Files and Handles --
+-- See files/*
 
 
 
