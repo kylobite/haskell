@@ -1151,6 +1151,7 @@ primes n = take n gen where
             mapP xs = map (\(a,b) -> if not b then a else -1) $ zip xs $ map test xs
             test x  = or $ map (\y -> mod x y == 0) [2..x - 1]
 -- Generates infinite list of primes, request how many you want
+-- This now sucks, see new version: primes'
 
 -- Elegant (yet slow) implementation I found, I'm keeping it here for referencing
 primes = sieve [2..]
@@ -1222,6 +1223,13 @@ myShow3 = show
 -- Working with Files and Handles --
 -- Deleting and Renaming Files --
 -- See files/*
+
+-- Revised Prime Generator --
+primes' :: Int -> [Int]
+primes' n = take n $ [2] ++ filter test [3,5..] where
+            test x  = not $ or $ map (\y -> rem x y == 0) [2..x - 1]
+-- Generates infinite list of primes, request how many you want
+-- I cannot believe I did not realize this last time.
 
 
 
