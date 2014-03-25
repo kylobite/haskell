@@ -17,3 +17,20 @@ mainloop inh outh =
             else do inpStr <- hGetLine inh
                     hPutStrLn outh $ map toUpper inpStr
                     mainloop inh outh
+
+-- Standard In, Out, and Error --
+-- Constants: stdin, stdout, stderr
+getLine'  = hGetLine stdin
+putStrLn' = hPutStrln stdout
+print'    = hPrint stdout
+
+-- Seek and Tell --
+-- hTell gives current position
+-- hSeek moves current position
+-- * hTell :: Handle -> IO Integer
+-- * hSeek :: Handle -> SeekMode -> Integer -> IO ()
+--- SeekMode: 
+--- + AbsoluteSeek: precise location in file
+--- + RelativeSeek: from current location
+--- + SeekFromEnd:  from the end, backwards
+-- hIsSeekable tells if Handle can be seeked

@@ -1220,6 +1220,7 @@ myShow3 = show
 -- myShow2,3 will work
 
 -- Working with Files and Handles --
+-- Deleting and Renaming Files --
 -- See files/*
 
 
