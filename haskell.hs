@@ -1099,9 +1099,9 @@ interFact range = loop 0 range where
                  | otherwise  = loop (n * range) (range - 1)
 
 -- I didn't write this, but I wanted to know how it worked
-quicksort :: (Ord a) => [a] -> [a]
-quicksort []      = []
-quicksort (x:xs)  = (lesser xs) ++ [x] ++ (greater xs)
+quicksort' :: (Ord a) => [a] -> [a]
+quicksort' []     = []
+quicksort' (x:xs) = (lesser xs) ++ [x] ++ (greater xs)
     where lesser  = filter (<  x) xs
           greater = filter (>= x) xs
 
@@ -1226,10 +1226,69 @@ myShow3 = show
 
 -- Revised Prime Generator --
 primes' :: Int -> [Int]
-primes' n = take n $ [2] ++ filter test [3,5..] where
-            test x  = not $ or $ map (\y -> rem x y == 0) [2..x - 1]
+primes' n = take n $ [2] ++ filter isPrime [3,5..] where
+            isPrime x  = not $ or $ map (\y -> rem x y == 0) [2..x - 1]
 -- Generates infinite list of primes, request how many you want
--- I cannot believe I did not realize this last time.
+
+-- ~ LYAH 
+-- Recursion
+maximum' :: (Ord a) => [a] -> a
+maximum' []     = error "Empty list"
+maximum' [x]    = x
+maximum' (x:xs) | x > maxTail = x
+                | otherwise   = maxTail
+                where maxTail = maximum' xs
+
+replicate' :: (Num i, Ord i) => i -> a -> [a]
+replicate' n x
+    | n <= 0    = []
+    | otherwise = x : replicate' (n-1) x
+
+take' :: (Num i, Ord i) => i -> [a] -> [a]
+take' n _ 
+    | n <= 0   = []
+take' _ []     = []
+take' n (x:xs) = x : take' (n-1) xs
+
+reverse' :: [a] -> [a]
+reverse' []     = []
+reverse' (x:xs) = reverse' xs ++ [x]
+
+repeat' :: a -> [a]
+repeat' x = x : repeat' x
+
+zip' :: [a] -> [b] -> [(a,b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x:xs) (y:ys) = (x,y) : zip' xs ys
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' a [] = False
+elem' a (x:xs)
+    | a == x    = True
+    | otherwise = a `elem'` xs
+
+-- Quick, sort!
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) =
+    let lesser  = quicksort [y | y <- xs, y <= x]
+        greater = quicksort [y | y <- xs, y >  x]
+    in lesser ++ [x] ++ greater
+
+-- ~ RWH
+-- Sequencing
+-- * (>>) :: (Monad m) => m a -> m b -> m b
+--- (>>) will take two actions, call them in order, and return the last
+
+-- * (>>=) :: (Monad m) => m a -> (a -> m b) -> m b
+--- (>>=) will take two actions, call the first, pass its result, and return the last
+
+putStrLn "What is your name?" >> getLine >>= (\x -> putStrLn $ "Welcome to Haskell, " ++ x ++ "!")
+--- What is your name? <name>
+--- Welcome to Haskell, <name>
+
+
 
 
 
